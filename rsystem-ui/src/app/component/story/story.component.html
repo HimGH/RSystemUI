@@ -6,45 +6,60 @@
         <div class="container mt-4">
 
             <input type="text" [(ngModel)]="keyword" (ngModelChange)="fetchStory()" placeholder="Search story..." class="form-control mb-4">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Title</th>
-                  <th>URL</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let record of storyModel; let i = index">
-                  <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
-                  <td>{{ record.title }}</td>
-                  <td>{{ isNullOrWhiteSpace(record.url)? 'N/A': record.url}}</td>
-              
-                </tr>
-              </tbody>
-            </table>
-          
-            <nav aria-label="Page navigation">
-              <ul class="pagination">
-                <li class="page-item" [class.disabled]="currentPage === 1">
-                  <a class="page-link" (click)="goToPage(1)">First</a>
-                </li>
-                <li class="page-item" [class.disabled]="currentPage === 1">
-                  <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
-                </li>
-          
-                <li class="page-item" *ngFor="let page of pages">
-                  <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
-                </li>
-          
-                <li class="page-item" [class.disabled]="currentPage === totalPages">
-                  <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
-                </li>
-                <li class="page-item" [class.disabled]="currentPage === totalPages">
-                  <a class="page-link" (click)="goToPage(totalPages)">Last</a>
-                </li>
-              </ul>
-            </nav>
+            
+            <div *ngIf="totalItems == 0">
+                No Record Found
+            </div>
+            <div *ngIf="totalItems > 0" >
+                <table  class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>URL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <div></div>
+                      <tr *ngFor="let record of storyModel; let i = index">
+                        <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                        <td>{{ record.title }}</td>
+                        <td>{{ isNullOrWhiteSpace(record.url)? 'N/A': record.url}}</td>
+                    
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style="float: right;">TotalRecords: {{totalItems}}</div>
+                  <!-- <nav aria-label="Page navigation">
+                    <ul class="pagination"> <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">Previous</button>
+                    <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+                    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages - 1">Next</button>
+                </ul>
+                  </nav> -->
+                  <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                      <li class="page-item" [class.disabled]="currentPage === 1">
+                        <a class="page-link" (click)="goToPage(1)">First</a>
+                      </li>
+                      <li class="page-item" [class.disabled]="currentPage === 1">
+                        <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
+                      </li>
+                
+                      <li class="page-item" *ngFor="let page of totalPagesArr">
+                        <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+                      </li>
+                
+                      <li class="page-item" [class.disabled]="currentPage === totalPages">
+                        <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+                      </li>
+                      <li class="page-item" [class.disabled]="currentPage === totalPages">
+                        <a class="page-link" (click)="goToPage(totalPages)">Last</a>
+                      </li>
+                    </ul>
+                  </nav>
+                 
+            </div>
+            
           </div>
       </div>
 </div>

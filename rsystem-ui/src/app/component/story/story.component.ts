@@ -10,27 +10,30 @@ import { StoryService } from 'src/app/story.service';
 })
 export class StoryComponent implements OnInit {
 
-  currentPage = 1; // Current page number
-  itemsPerPage = 5; // Number of items per page
-  pages: number[] = []; // Array to hold page numbers
-  totalItems: number =0; // Total number of items
+  currentPage = 1; 
+  itemsPerPage = 10; 
+  pages: number[] = []; 
+  totalItems: number =-1; 
   storyModel : StoryModel[] =[];
   keyword = '';
-
+messag = "";
   public loading = false;
 
   constructor(private storyService: StoryService,private spinner: NgxLoadingService) {
    
   }
 
-  fetchStory(){
+  fetchStory(pN=0,pS=10){
     this.loading = true;
-    this.storyService.getData(0,20,this.keyword).subscribe(
+    this.storyService.getData(pN,pS,this.keyword).subscribe(
       (response) => {
         this.storyModel = response.data; 
         console.log( response);
+        console.log( this.storyModel);
         this.loading = false;
-        this.totalItems = this.storyModel.length;
+        this.totalItems = response.totalCount;
+        console.log( this.totalItems);
+        
       },
       error => {
         this.loading = false;
@@ -54,11 +57,21 @@ export class StoryComponent implements OnInit {
 
   goToPage(page: number): void {
     this.currentPage = page;
+    this.fetchStory(this.currentPage);
     this.updatePaginatedItems();
   }
 
   get totalPages(): number {
-    return Math.ceil(this.totalItems / this.itemsPerPage);
+
+    return  Math.ceil(this.totalItems / this.itemsPerPage);
   }
+
+  get totalPagesArr(): number[] {
+
+    let noOfPage =  Math.ceil(this.totalItems / this.itemsPerPage);
+    return Array.from({ length: 5 }, (_, i) => i + 1);
+  }
+
+
 
 }
