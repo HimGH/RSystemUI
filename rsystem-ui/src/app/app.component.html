@@ -300,8 +300,35 @@
       visibility: hidden;
     }
   }
+  .header {
+      background-color: #343a40;
+      color: white;
+      padding: 10px 0;
+    }
+    .header-logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .nav-link {
+      color: white !important;
+    }
+    .nav-link:hover {
+      color: #adb5bd !important;
+    }
 </style>
 
+<header class="header">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- Logo -->
+      <div class="header-logo">
+        RSystem
+      </div>
+    </div>
+  </div>
+</header>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-circus" ></ngx-spinner>
 
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->

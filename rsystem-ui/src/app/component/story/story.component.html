@@ -1,32 +1,29 @@
 <div class="container">
     <div class="container">
-        <h1 class="text-center">Welcome to My Angular App</h1>
+        <h1 class="text-center" style="margin: 10px;">Welcome to our story collection!</h1>
      
         
         <div class="container mt-4">
-            <h1 class="mb-4">Records with Pagination</h1>
-          
-            <!-- Table for displaying records -->
+
+            <input type="text" [(ngModel)]="keyword" (ngModelChange)="fetchStory()" placeholder="Search story..." class="form-control mb-4">
             <table class="table table-striped">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
+                  <th>Title</th>
+                  <th>URL</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let record of storyModel; let i = index">
                   <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                   <td>{{ record.title }}</td>
-                  <td>{{ record.url }}</td>
+                  <td>{{ isNullOrWhiteSpace(record.url)? 'N/A': record.url}}</td>
               
                 </tr>
               </tbody>
             </table>
           
-            <!-- Pagination Controls -->
             <nav aria-label="Page navigation">
               <ul class="pagination">
                 <li class="page-item" [class.disabled]="currentPage === 1">
@@ -51,4 +48,15 @@
           </div>
       </div>
 </div>
-   
+
+<ngx-loading
+    [show]="loading"
+    [config]="{ backdropBorderRadius: '3px' }"
+    [template]="customLoadingTemplate"
+  ></ngx-loading>
+
+  <div class="my-container">
+    <ng-template #customLoadingTemplate>
+      <div class="custom-class">
+      </div>
+    </ng-template>

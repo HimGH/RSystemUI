@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoryService {
 
-  private apiUrl = 'https://localhost:44376/Story/GetStories?PageNumber=1&PageSize=20';
 
   constructor(private http: HttpClient) { }
  // Method to get data from API
- getData(): Observable<any> {
-  return this.http.get<any>(this.apiUrl).pipe(
+ getData(pn:number,ps:number,kw:string): Observable<any> {
+  return this.http.get<any>(environment.api_url + 'Story/GetStories?PageNumber='+pn+'&PageSize='+ps+'&Search='+kw).pipe(
     map(response => response), // Optionally process the response
     catchError(this.handleError<any>('getData', []))
   );

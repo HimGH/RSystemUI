@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxLoadingService } from 'ngx-loading';
 import { StoryModel } from 'src/app/model/StoryModel';
 import { StoryService } from 'src/app/story.service';
 
@@ -14,25 +15,37 @@ export class StoryComponent implements OnInit {
   pages: number[] = []; // Array to hold page numbers
   totalItems: number =0; // Total number of items
   storyModel : StoryModel[] =[];
+  keyword = '';
 
-  constructor(private storyService: StoryService) {
+  public loading = false;
+
+  constructor(private storyService: StoryService,private spinner: NgxLoadingService) {
    
   }
 
-  ngOnInit(): void {
-    this.storyService.getData().subscribe(
+  fetchStory(){
+    this.loading = true;
+    this.storyService.getData(0,20,this.keyword).subscribe(
       (response) => {
         this.storyModel = response.data; 
-        console.log( this.storyModel);
+        console.log( response);
+        this.loading = false;
         this.totalItems = this.storyModel.length;
       },
       error => {
+        this.loading = false;
         console.error('Error fetching data:', error);
       }
     );
     this.updatePaginatedItems();
   }
 
+  ngOnInit(): void {
+  this.fetchStory();
+  }
+  isNullOrWhiteSpace(value: string | null | undefined): boolean {
+    return !value || !value.trim();
+  }
   updatePaginatedItems(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
