@@ -24,7 +24,7 @@
                       <tr *ngFor="let record of storyModel; let i = index">
                         <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                         <td>{{ record.title }}</td>
-                        <td>{{ isNullOrWhiteSpace(record.url)? 'N/A': record.url}}</td>
+                        <td><a [href]="record.url" target="_blank">{{ isNullOrWhiteSpace(record.url)? 'N/A': record.url}}</a></td>
                     
                       </tr>
                     </tbody>
